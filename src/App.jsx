@@ -46,7 +46,6 @@ export default function App() {
 
   const cepValue = watch('cep');
 
-  // Efeito para buscar o endereço quando o CEP muda
   useEffect(() => {
     const fetchAddress = async (cep) => {
       setCepLoading(true);
@@ -58,8 +57,7 @@ export default function App() {
           setValue('rua', '');
           setCepMessage('CEP não encontrado.');
         } else {
-          // CORREÇÃO: Garante que um valor string seja sempre passado
-          setValue('rua', data.logouro || '', { shouldValidate: true });
+          setValue('rua', data.logradouro || '', { shouldValidate: true });
         }
       } catch (error) {
         console.error("Erro ao buscar CEP:", error);
@@ -73,7 +71,7 @@ export default function App() {
     if (cleanedCep?.length === 8) {
       fetchAddress(cleanedCep);
     } else {
-       setValue('rua', '');
+      setValue('rua', '');
     }
   }, [cepValue, setValue]);
 
@@ -89,7 +87,6 @@ export default function App() {
         <p className="text-gray-600 text-center mb-8">Preencha os campos abaixo para se cadastrar.</p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-          {/* Seção de Informações Pessoais */}
           <fieldset className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 border-t pt-6">
             <legend className="text-xl font-semibold text-gray-700 mb-4 px-2 -ml-2">Informações Pessoais</legend>
             <InputField label="Nome Completo" id="nome" register={register} error={errors.nome} placeholder="Seu nome completo" />
@@ -109,21 +106,20 @@ export default function App() {
             </div>
           </fieldset>
 
-          {/* Seção de Endereço */}
           <fieldset className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-6 border-t pt-6">
             <legend className="text-xl font-semibold text-gray-700 mb-4 px-2 -ml-2">Endereço e Contato</legend>
             <div className="w-full">
               <InputField label="CEP" id="cep" register={register} error={errors.cep} placeholder="00000-000" />
-               {cepLoading && <p className="text-xs text-blue-600 mt-1">Buscando...</p>}
-               {cepMessage && <p className="text-xs text-red-600 mt-1">{cepMessage}</p>}
+              {cepLoading && <p className="text-xs text-blue-600 mt-1">Buscando...</p>}
+              {cepMessage && <p className="text-xs text-red-600 mt-1">{cepMessage}</p>}
             </div>
-            <InputField label="Rua / Logradouro" id="rua" register={register} error={errors.rua} placeholder="Sua rua será preenchida" readOnly className="bg-gray-100 cursor-not-allowed"/>
+            <InputField label="Rua / Logradouro" id="rua" register={register} error={errors.rua} placeholder="Sua rua será preenchida" readOnly className="bg-gray-100 cursor-not-allowed" />
             <InputField label="Número" id="numero" register={register} error={errors.numero} placeholder="123" />
             <div className="md:col-span-3">
               <InputField label="Telefone" id="telefone" type="tel" register={register} error={errors.telefone} placeholder="(11) 98765-4321" />
             </div>
           </fieldset>
-          
+
           <div className="pt-6">
             <button
               type="submit"
